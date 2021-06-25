@@ -1,37 +1,16 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useRoom } from '../../hooks/useRoom';
 import { database } from '../../services/firebase';
 import { Button } from '../../components/Button';
+import { Question } from '../../components/Question';
 import { RoomCode } from '../../components/RoomCode';
+import { IconLike } from '../../components/IconLike';
 
 import { ReactComponent as LogoImg } from '../../assets/images/logo.svg';
 
 import * as S from './styles';
-
-type FirebaseQuestions = Record<
-  string,
-  {
-    author: {
-      name: string;
-      avatar: string;
-    };
-    content: string;
-    isAnswered: boolean;
-    isHighlighted: boolean;
-  }
->;
-
-interface Question {
-  id: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-  content: string;
-  isAnswered: boolean;
-  isHighlighted: boolean;
-}
 
 interface RoomParams {
   id: string;
@@ -39,13 +18,13 @@ interface RoomParams {
 
 export const Room = () => {
   const [newQuestion, setNewQuestion] = React.useState('');
-  const [questions, setQuestions] = React.useState<Question[]>([]);
-  const [title, setTitle] = React.useState('');
 
   const { user } = useAuth();
 
   const params = useParams<RoomParams>();
   const roomId = params.id;
+
+  const { title, questions } = useRoom(roomId);
 
   async function handleSendQuestion(event: React.FormEvent) {
     event.preventDefault();
@@ -69,29 +48,22 @@ export const Room = () => {
     setNewQuestion('');
   }
 
-  React.useEffect(() => {
-    const roomRef = database.ref(`rooms/${roomId}`);
-
-    roomRef.on('value', (room) => {
-      const databaseRoom = room.val();
-      const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
-
-      const parsedQuestions = Object.entries(firebaseQuestions).map(
-        ([key, valeu]) => {
-          return {
-            id: key,
-            content: valeu.content,
-            author: valeu.author,
-            isHighlighted: valeu.isHighlighted,
-            isAnswered: valeu.isAnswered,
-          };
-        },
-      );
-
-      setTitle(databaseRoom.title);
-      setQuestions(parsedQuestions);
-    });
-  }, [roomId]);
+  async function handleLikeQuestion(
+    questionId: string,
+    likeId: string | undefined,
+  ) {
+    if (likeId) {
+      await database
+        .ref(`/rooms/${roomId}/questions/${questionId}/likes/${likeId}`)
+        .remove();
+    } else {
+      await database
+        .ref(`/rooms/${roomId}/questions/${questionId}/likes`)
+        .push({
+          authorId: user?.id,
+        });
+    }
+  }
 
   return (
     <S.Container>
@@ -135,7 +107,23 @@ export const Room = () => {
             </Button>
           </div>
         </form>
-        {JSON.stringify(questions)}
+        <div className="question-list">
+          {questions.map(({ id, content, author, likeCount, likeId }) => {
+            return (
+              <Question key={id} content={content} author={author}>
+                <button
+                  className={`like-button ${likeId ? 'liked' : ''}`}
+                  type="button"
+                  aria-label="Marcar como gostei"
+                  onClick={() => handleLikeQuestion(id, likeId)}
+                >
+                  {likeCount > 0 && <span>{likeCount}</span>}
+                  <IconLike />
+                </button>
+              </Question>
+            );
+          })}
+        </div>
       </S.MainContent>
     </S.Container>
   );

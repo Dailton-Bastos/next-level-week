@@ -16,6 +16,12 @@ export const Button = styled.button`
 
   transition: filter 0.2s;
 
+  &.outlined {
+    background-color: #fff;
+    border: 1px solid #835afd;
+    color: #835afd;
+  }
+
   &:not(:disabled):hover {
     filter: brightness(0.9);
   }

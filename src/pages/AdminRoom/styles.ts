@@ -15,6 +15,15 @@ export const Container = styled.div`
       > a svg {
         max-height: 45px;
       }
+
+      > div {
+        display: flex;
+        gap: 1.6rem;
+
+        button {
+          height: 40px;
+        }
+      }
     }
   }
 
@@ -46,44 +55,8 @@ export const MainContent = styled.main`
     }
   }
 
-  form {
-    textarea {
-      width: 100%;
-      border: none;
-      padding: 16px;
-      border-radius: 8px;
-      background-color: #fefefe;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      resize: vertical;
-      min-height: 130px;
-    }
-  }
-
   .question-list {
     margin: 3.2rem 0;
-  }
-
-  .form-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 1.6rem;
-
-    > span {
-      font-size: 1.4rem;
-      color: #737380;
-      font-weight: 500;
-
-      button {
-        background-color: transparent;
-        border: 0;
-        color: #835afd;
-        text-decoration: underline;
-        font-size: 1.4rem;
-        font-weight: 500;
-        cursor: pointer;
-      }
-    }
   }
 `
 
