@@ -108,21 +108,39 @@ export const Room = () => {
           </div>
         </form>
         <div className="question-list">
-          {questions.map(({ id, content, author, likeCount, likeId }) => {
-            return (
-              <Question key={id} content={content} author={author}>
-                <button
-                  className={`like-button ${likeId ? 'liked' : ''}`}
-                  type="button"
-                  aria-label="Marcar como gostei"
-                  onClick={() => handleLikeQuestion(id, likeId)}
+          {questions.map(
+            ({
+              id,
+              content,
+              author,
+              isAnswered,
+              isHighlighted,
+              likeCount,
+              likeId,
+            }) => {
+              return (
+                <Question
+                  key={id}
+                  content={content}
+                  author={author}
+                  isAnswered={isAnswered}
+                  isHighlighted={isHighlighted}
                 >
-                  {likeCount > 0 && <span>{likeCount}</span>}
-                  <IconLike />
-                </button>
-              </Question>
-            );
-          })}
+                  {!isAnswered && (
+                    <button
+                      className={`like-button ${likeId ? 'liked' : ''}`}
+                      type="button"
+                      aria-label="Marcar como gostei"
+                      onClick={() => handleLikeQuestion(id, likeId)}
+                    >
+                      {likeCount > 0 && <span>{likeCount}</span>}
+                      <IconLike />
+                    </button>
+                  )}
+                </Question>
+              );
+            },
+          )}
         </div>
       </S.MainContent>
     </S.Container>

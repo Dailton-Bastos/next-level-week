@@ -9,6 +9,8 @@ import { RoomCode } from '../../components/RoomCode';
 
 import { ReactComponent as LogoImg } from '../../assets/images/logo.svg';
 import { ReactComponent as DeleteIcon } from '../../assets/images/delete.svg';
+import { ReactComponent as CheckIcon } from '../../assets/images/check.svg';
+import { ReactComponent as AnswerIcon } from '../../assets/images/answer.svg';
 
 import * as S from './styles';
 
@@ -40,6 +42,18 @@ export const AdminRoom = () => {
     }
   }
 
+  async function handleCheckQuestionAsAnswered(questionId: string) {
+    await database.ref(`/rooms/${roomId}/questions/${questionId}`).update({
+      isAnswered: true,
+    });
+  }
+
+  async function handleHighlightQuestion(questionId: string) {
+    await database.ref(`/rooms/${roomId}/questions/${questionId}`).update({
+      isHighlighted: true,
+    });
+  }
+
   return (
     <S.Container>
       <header>
@@ -63,19 +77,46 @@ export const AdminRoom = () => {
         </div>
 
         <div className="question-list">
-          {questions.map(({ id, content, author }) => {
-            return (
-              <Question key={id} content={content} author={author}>
-                <button
-                  aria-label="Remover pergunta"
-                  type="button"
-                  onClick={() => handleDeleteQuestion(id)}
+          {questions.map(
+            ({ id, content, author, isAnswered, isHighlighted }) => {
+              return (
+                <Question
+                  key={id}
+                  content={content}
+                  author={author}
+                  isAnswered={isAnswered}
+                  isHighlighted={isHighlighted}
                 >
-                  <DeleteIcon />
-                </button>
-              </Question>
-            );
-          })}
+                  {!isAnswered && (
+                    <React.Fragment>
+                      <button
+                        aria-label="Marcar pergunta como respondida"
+                        type="button"
+                        onClick={() => handleCheckQuestionAsAnswered(id)}
+                      >
+                        <CheckIcon />
+                      </button>
+
+                      <button
+                        aria-label="Dar destaque à pergunta"
+                        type="button"
+                        onClick={() => handleHighlightQuestion(id)}
+                      >
+                        <AnswerIcon />
+                      </button>
+                    </React.Fragment>
+                  )}
+                  <button
+                    aria-label="Remover pergunta"
+                    type="button"
+                    onClick={() => handleDeleteQuestion(id)}
+                  >
+                    <DeleteIcon />
+                  </button>
+                </Question>
+              );
+            },
+          )}
         </div>
       </S.MainContent>
     </S.Container>

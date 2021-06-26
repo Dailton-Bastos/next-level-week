@@ -10,6 +10,19 @@ export const Question = styled.div`
     margin-top: 8px;
   }
 
+  &.highlighted {
+    background-color: #f4f0ff;
+    border: 1px solid #835afd;
+
+    footer .user-info span {
+      color: #29292e;
+    }
+  }
+
+  &.answered {
+    background-color: #dbdcdd;
+  }
+
   p {
     color: #29292e;
   }
@@ -19,6 +32,12 @@ export const Question = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-top: 2.4rem;
+
+    > div {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+    }
 
     button {
       border: none;
