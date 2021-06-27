@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { database } from '../../services/firebase';
+import { Head } from '../../components/Head';
 import { ReactComponent as IlustrationImg } from '../../assets/images/illustration.svg';
 import logoImg from '../../assets/images/logo.svg';
 
@@ -33,6 +34,10 @@ export const NewRoom = () => {
 
   return (
     <S.Auth>
+      <Head
+        title="Criar uma nova sala"
+        description="Let Me Ask - Tire as dúvidas da sua audiência em tempo-real"
+      />
       <aside>
         <IlustrationImg />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>

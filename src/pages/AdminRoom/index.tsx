@@ -12,6 +12,7 @@ import { IconDelete } from '../../components/IconDelete';
 import { IconAlert } from '../../components/IconAlert';
 import { DefaultModal } from '../../components/DefaultModal';
 import { WithoutQuestions } from '../../components/WithoutQuestions';
+import { Head } from '../../components/Head';
 
 import { ReactComponent as LogoImg } from '../../assets/images/logo.svg';
 import { ReactComponent as DeleteIcon } from '../../assets/images/delete.svg';
@@ -95,6 +96,7 @@ export const AdminRoom = () => {
 
   return (
     <S.Container>
+      <Head title={title} description={title} />
       <header>
         <div className="content">
           <Link to="/">

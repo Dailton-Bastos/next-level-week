@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { database } from '../../services/firebase';
+import { Head } from '../../components/Head';
 import { ReactComponent as IlustrationImg } from '../../assets/images/illustration.svg';
 import logoImg from '../../assets/images/logo.svg';
 import { ReactComponent as GoogleIcon } from '../../assets/images/google-icon.svg';
@@ -51,6 +52,10 @@ export const Home = () => {
 
   return (
     <S.Auth>
+      <Head
+        title="Entre ou crie sua sala com o Google"
+        description="Let Me Ask - Tire as dúvidas da sua audiência em tempo-real"
+      />
       <aside>
         <IlustrationImg />
         <strong>Crie salas de Q&amp;A ao-vivo</strong>

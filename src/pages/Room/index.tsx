@@ -9,6 +9,7 @@ import { RoomCode } from '../../components/RoomCode';
 import { IconLike } from '../../components/IconLike';
 import { Loading } from '../../components/Loading';
 import { WithoutQuestions } from '../../components/WithoutQuestions';
+import { Head } from '../../components/Head';
 
 import { ReactComponent as LogoImg } from '../../assets/images/logo.svg';
 
@@ -69,6 +70,7 @@ export const Room = () => {
 
   return (
     <S.Container>
+      <Head title={title} description={title} />
       <header>
         <div className="content">
           <Link to="/">
