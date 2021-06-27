@@ -8,6 +8,7 @@ import { Question } from '../../components/Question';
 import { RoomCode } from '../../components/RoomCode';
 import { IconLike } from '../../components/IconLike';
 import { Loading } from '../../components/Loading';
+import { WithoutQuestions } from '../../components/WithoutQuestions';
 
 import { ReactComponent as LogoImg } from '../../assets/images/logo.svg';
 
@@ -20,7 +21,7 @@ interface RoomParams {
 export const Room = () => {
   const [newQuestion, setNewQuestion] = React.useState('');
 
-  const { user } = useAuth();
+  const { user, signInWithGoogle } = useAuth();
 
   const params = useParams<RoomParams>();
   const roomId = params.id;
@@ -73,7 +74,18 @@ export const Room = () => {
           <Link to="/">
             <LogoImg />
           </Link>
-          <RoomCode code={roomId} />
+          <aside>
+            {user && (
+              <Link to={`/admin/rooms/${roomId}`}>
+                <S.UserInfo>
+                  <img src={user.avatar} alt={user.avatar} />
+                  <span>{user.name}</span>
+                </S.UserInfo>
+              </Link>
+            )}
+
+            <RoomCode code={roomId} />
+          </aside>
         </div>
       </header>
 
@@ -91,15 +103,14 @@ export const Room = () => {
           />
 
           <div className="form-footer">
-            {user ? (
-              <S.UserInfo>
-                <img src={user.avatar} alt={user.avatar} />
-                <span>{user.name}</span>
-              </S.UserInfo>
-            ) : (
+            {!user && (
               <span>
                 Para enviar uma pergunta,
-                <button type="button"> faça seu login</button>.
+                <button type="button" onClick={signInWithGoogle}>
+                  {' '}
+                  faça seu login
+                </button>
+                .
               </span>
             )}
 
@@ -108,6 +119,9 @@ export const Room = () => {
             </Button>
           </div>
         </form>
+
+        {questions.length < 1 && <WithoutQuestions />}
+
         <div className="question-list">
           {questions.map(
             ({

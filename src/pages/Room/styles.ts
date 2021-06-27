@@ -12,6 +12,16 @@ export const Container = styled.div`
       align-items: center;
       justify-content: space-between;
 
+      aside {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        a {
+          text-decoration: none;
+        }
+      }
+
       > a svg {
         max-height: 45px;
 

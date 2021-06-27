@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { useRoom } from '../../hooks/useRoom';
+import { useQuestion } from '../../hooks/useQuestion';
+import { useAuth } from '../../hooks/useAuth';
 import { database } from '../../services/firebase';
 import { Button } from '../../components/Button';
 import { Question } from '../../components/Question';
@@ -9,6 +11,7 @@ import { Loading } from '../../components/Loading';
 import { IconDelete } from '../../components/IconDelete';
 import { IconAlert } from '../../components/IconAlert';
 import { DefaultModal } from '../../components/DefaultModal';
+import { WithoutQuestions } from '../../components/WithoutQuestions';
 
 import { ReactComponent as LogoImg } from '../../assets/images/logo.svg';
 import { ReactComponent as DeleteIcon } from '../../assets/images/delete.svg';
@@ -16,7 +19,6 @@ import { ReactComponent as CheckIcon } from '../../assets/images/check.svg';
 import { ReactComponent as AnswerIcon } from '../../assets/images/answer.svg';
 
 import * as S from './styles';
-import { useQuestion } from '../../hooks/useQuestion';
 
 interface RoomParams {
   id: string;
@@ -49,6 +51,8 @@ export const AdminRoom = () => {
 
   const { handleDeleteQuestion } = useQuestion({ roomId, currentQuestionId });
 
+  const { signOutApp } = useAuth();
+
   const history = useHistory();
 
   function handleOpenEndRoomModal() {
@@ -71,6 +75,8 @@ export const AdminRoom = () => {
     await database.ref(`rooms/${roomId}`).update({
       endedAt: new Date(),
     });
+
+    await signOutApp();
 
     history.push('/');
   }
@@ -108,6 +114,8 @@ export const AdminRoom = () => {
           <h1>Sala {title}</h1>
           {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
+
+        {questions.length < 1 && <WithoutQuestions />}
 
         <div className="question-list">
           {questions.map(
