@@ -14,6 +14,7 @@ interface User {
 interface AuthContextTypes {
   user: User | undefined;
   signInWithGoogle: () => Promise<void>;
+  signOutApp: () => Promise<void>;
 }
 
 export const AuthContext = React.createContext({} as AuthContextTypes);
@@ -41,6 +42,15 @@ export const AuthStorage = ({ children }: AuthContextProps) => {
     }
   }
 
+  async function signOutApp() {
+    try {
+      await firebase.auth().signOut();
+      setUser(undefined);
+    } catch (error) {
+      throw new Error('An error happened.');
+    }
+  }
+
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -62,7 +72,7 @@ export const AuthStorage = ({ children }: AuthContextProps) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle, signOutApp }}>
       {children}
     </AuthContext.Provider>
   );
