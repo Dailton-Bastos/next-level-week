@@ -33,6 +33,11 @@ export const Question = styled.div`
     justify-content: space-between;
     margin-top: 2.4rem;
 
+    @media (max-width: 620px) {
+      width: 100%;
+      flex-direction: column;
+    }
+
     > div {
       display: flex;
       align-items: center;
@@ -69,6 +74,12 @@ export const Question = styled.div`
 export const UserInfo = styled.div`
   display: flex;
   align-items: center;
+
+  @media (max-width: 620px) {
+    width: 100%;
+    align-items: flex-start;
+    margin-bottom: 15px;
+  }
 
   img {
     width: 32px;

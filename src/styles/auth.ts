@@ -8,6 +8,10 @@ export const Auth = styled.div`
   aside {
     flex: 7;
 
+    @media (max-width: 820px) {
+      display: none;
+    }
+
     background-color: #835afd;
     color: #fff;
 

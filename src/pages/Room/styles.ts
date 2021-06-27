@@ -14,7 +14,15 @@ export const Container = styled.div`
 
       > a svg {
         max-height: 45px;
+
+        @media (max-width: 620px) {
+          margin-bottom: 15px;
+        } 
       }
+
+      @media (max-width: 620px) {
+        flex-direction: column;
+      } 
     }
   }
 
@@ -44,6 +52,10 @@ export const MainContent = styled.main`
       font-weight: 500;
       font-size: 1.4rem;
     }
+
+    @media (max-width: 620px) {
+      flex-direction: column;
+    }
   }
 
   form {
@@ -69,6 +81,15 @@ export const MainContent = styled.main`
     justify-content: space-between;
     margin-top: 1.6rem;
 
+    @media (max-width: 620px) {
+      flex-direction: column;
+      align-items: flex-start;
+      button[type="submit"] {
+        width: 100%;
+        margin-top: 15px;
+      }
+    }
+
     > span {
       font-size: 1.4rem;
       color: #737380;
@@ -85,6 +106,10 @@ export const MainContent = styled.main`
       }
     }
   }
+
+  @media (max-width: 820px) {
+    padding: 0 2.4rem;
+  } 
 `
 
 export const UserInfo = styled.div`

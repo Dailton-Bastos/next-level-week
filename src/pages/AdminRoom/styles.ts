@@ -14,15 +14,28 @@ export const Container = styled.div`
 
       > a svg {
         max-height: 45px;
+
+        @media (max-width: 820px) {
+          margin-bottom: 15px;
+        } 
       }
 
       > div {
         display: flex;
         gap: 1.6rem;
 
+        @media (max-width: 620px) {
+          width: 100%;
+          flex-direction: column;
+        }
+
         button {
           height: 40px;
         }
+      }
+
+      @media (max-width: 820px) {
+        flex-direction: column;
       }
     }
   }
@@ -53,10 +66,18 @@ export const MainContent = styled.main`
       font-weight: 500;
       font-size: 1.4rem;
     }
+
+    @media (max-width: 620px) {
+      flex-direction: column;
+    }
   }
 
   .question-list {
     margin: 3.2rem 0;
+  }
+
+  @media (max-width: 820px) {
+    padding: 0 2.4rem;
   }
 `
 
