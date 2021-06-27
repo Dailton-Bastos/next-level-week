@@ -7,11 +7,14 @@ import logoImg from '../../assets/images/logo.svg';
 import { ReactComponent as GoogleIcon } from '../../assets/images/google-icon.svg';
 
 import { Button } from '../../components/Button';
+import { Loading } from '../../components/Loading';
 
 import * as S from '../../styles/auth';
 
 export const Home = () => {
   const [roomCode, setRoomCode] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
   const history = useHistory();
 
   const { user, signInWithGoogle } = useAuth();
@@ -27,7 +30,11 @@ export const Home = () => {
 
     if (roomCode.trim() === '') return;
 
+    setLoading(true);
+
     const roomRef = await database.ref(`rooms/${roomCode}`).get();
+
+    setLoading(false);
 
     if (!roomRef.exists()) {
       alert('Room does not exists.');
@@ -65,10 +72,17 @@ export const Home = () => {
               value={roomCode}
               onChange={({ target }) => setRoomCode(target.value)}
             />
-            <Button type="submit">Entrar na sala</Button>
+            {loading ? (
+              <Button type="button" disabled>
+                Carregando...
+              </Button>
+            ) : (
+              <Button type="submit">Entrar na sala</Button>
+            )}
           </form>
         </S.MainContent>
       </main>
+      {loading && <Loading />}
     </S.Auth>
   );
 };

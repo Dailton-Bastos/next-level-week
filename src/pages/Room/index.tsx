@@ -7,6 +7,7 @@ import { Button } from '../../components/Button';
 import { Question } from '../../components/Question';
 import { RoomCode } from '../../components/RoomCode';
 import { IconLike } from '../../components/IconLike';
+import { Loading } from '../../components/Loading';
 
 import { ReactComponent as LogoImg } from '../../assets/images/logo.svg';
 
@@ -24,7 +25,7 @@ export const Room = () => {
   const params = useParams<RoomParams>();
   const roomId = params.id;
 
-  const { title, questions } = useRoom(roomId);
+  const { title, questions, loading } = useRoom(roomId);
 
   async function handleSendQuestion(event: React.FormEvent) {
     event.preventDefault();
@@ -102,7 +103,7 @@ export const Room = () => {
               </span>
             )}
 
-            <Button type="submit" disabled={!user}>
+            <Button type="submit" disabled={!user || loading}>
               Enviar pergunta
             </Button>
           </div>
@@ -143,6 +144,8 @@ export const Room = () => {
           )}
         </div>
       </S.MainContent>
+
+      {loading && <Loading />}
     </S.Container>
   );
 };

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
-// import { useAuth } from '../../hooks/useAuth';
 import { useRoom } from '../../hooks/useRoom';
 import { database } from '../../services/firebase';
 import { Button } from '../../components/Button';
 import { Question } from '../../components/Question';
 import { RoomCode } from '../../components/RoomCode';
+import { Loading } from '../../components/Loading';
 
 import { ReactComponent as LogoImg } from '../../assets/images/logo.svg';
 import { ReactComponent as DeleteIcon } from '../../assets/images/delete.svg';
@@ -19,12 +19,10 @@ interface RoomParams {
 }
 
 export const AdminRoom = () => {
-  // const { user } = useAuth();
-
   const params = useParams<RoomParams>();
   const roomId = params.id;
 
-  const { title, questions } = useRoom(roomId);
+  const { title, questions, loading } = useRoom(roomId);
 
   const history = useHistory();
 
@@ -119,6 +117,7 @@ export const AdminRoom = () => {
           )}
         </div>
       </S.MainContent>
+      {loading && <Loading />}
     </S.Container>
   );
 };
