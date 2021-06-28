@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
 import { database } from '../../services/firebase';
 import { Head } from '../../components/Head';
+import { Loading } from '../../components/Loading';
 import { ReactComponent as IlustrationImg } from '../../assets/images/illustration.svg';
 import logoImg from '../../assets/images/logo.svg';
 
@@ -12,8 +14,10 @@ import * as S from '../../styles/auth';
 
 export const NewRoom = () => {
   const { user } = useAuth();
+  const { addToast } = useToast();
 
   const [newRoom, setNewRoom] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const history = useHistory();
 
@@ -22,11 +26,21 @@ export const NewRoom = () => {
 
     if (newRoom.trim() === '') return;
 
+    setLoading(true);
+
     const roomRef = database.ref('rooms');
 
     const firebaseRoom = await roomRef.push({
       title: newRoom,
       authorId: user?.id,
+    });
+
+    setLoading(false);
+
+    addToast({
+      type: 'success',
+      title: 'Sala criada com sucesso',
+      description: `Sala ${newRoom} foi adicionada`,
     });
 
     history.push(`/rooms/${firebaseRoom.key}`);
@@ -63,6 +77,7 @@ export const NewRoom = () => {
           </p>
         </S.MainContent>
       </main>
+      {loading && <Loading />}
     </S.Auth>
   );
 };

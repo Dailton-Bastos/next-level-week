@@ -44,6 +44,7 @@ export const Container = styled(animated.div)<ContainerProps>`
 
   div {
     flex: 1;
+    margin-right: 15px;
 
     p {
       margin-top: 4px;

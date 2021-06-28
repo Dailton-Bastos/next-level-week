@@ -3,6 +3,7 @@ import { Link, useParams, useHistory } from 'react-router-dom';
 import { useRoom } from '../../hooks/useRoom';
 import { useQuestion } from '../../hooks/useQuestion';
 import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
 import { database } from '../../services/firebase';
 import { Button } from '../../components/Button';
 import { Question } from '../../components/Question';
@@ -53,6 +54,7 @@ export const AdminRoom = () => {
   const { handleDeleteQuestion } = useQuestion({ roomId, currentQuestionId });
 
   const { signOutApp } = useAuth();
+  const { addToast } = useToast();
 
   const history = useHistory();
 
@@ -78,6 +80,11 @@ export const AdminRoom = () => {
     });
 
     await signOutApp();
+
+    addToast({
+      type: 'success',
+      title: 'Sala encerrada',
+    });
 
     history.push('/');
   }
