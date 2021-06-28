@@ -124,6 +124,10 @@ export const MainContent = styled.div`
       padding: 0 1rem;
       background-color: #fff;
       border: 1px solid #a8a8b3;
+
+      &.has-error {
+        border-color: #ea4335;
+      }
     }
 
     button, input {

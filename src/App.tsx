@@ -1,5 +1,6 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { AuthStorage } from './contexts/AuthContext';
+
+import { AppStorage } from './contexts';
 
 import { Home } from './pages/Home';
 import { NewRoom } from './pages/NewRoom';
@@ -11,7 +12,7 @@ import { GlobalStyle } from './styles/global';
 export const App = () => {
   return (
     <BrowserRouter>
-      <AuthStorage>
+      <AppStorage>
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/rooms/new" exact component={NewRoom} />
@@ -19,7 +20,8 @@ export const App = () => {
 
           <Route path="/admin/rooms/:id" component={AdminRoom} />
         </Switch>
-      </AuthStorage>
+      </AppStorage>
+
       <GlobalStyle />
     </BrowserRouter>
   );

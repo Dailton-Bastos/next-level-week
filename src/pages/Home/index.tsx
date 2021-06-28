@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
 import { database } from '../../services/firebase';
 import { Head } from '../../components/Head';
 import { ReactComponent as IlustrationImg } from '../../assets/images/illustration.svg';
@@ -15,10 +16,12 @@ import * as S from '../../styles/auth';
 export const Home = () => {
   const [roomCode, setRoomCode] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [hasError, setHasError] = React.useState(false);
 
   const history = useHistory();
 
   const { user, signInWithGoogle } = useAuth();
+  const { addToast } = useToast();
 
   async function handleCreateRoom() {
     if (!user) await signInWithGoogle();
@@ -38,14 +41,26 @@ export const Home = () => {
     setLoading(false);
 
     if (!roomRef.exists()) {
-      alert('Room does not exists.');
+      addToast({
+        type: 'error',
+        title: 'Sala não encontrada',
+        description: 'Verifique o código e tente novamente',
+      });
+      setHasError(true);
       return;
     }
 
     if (roomRef.val().endedAt) {
-      alert('Room already closed.');
+      addToast({
+        type: 'info',
+        title: 'Sala não disponível',
+        description: 'Sala não disponível, tente novamente mais tarde',
+      });
+      setHasError(true);
       return;
     }
+
+    setHasError(false);
 
     history.push(`/rooms/${roomCode}`);
   }
@@ -72,6 +87,7 @@ export const Home = () => {
           <div className="separator">ou entre em um sala</div>
           <form onSubmit={handleJoinRoom}>
             <input
+              className={hasError ? 'has-error' : ''}
               type="text"
               placeholder="Digite o código da sala"
               value={roomCode}

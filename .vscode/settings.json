@@ -9,5 +9,6 @@
     ".gitignore": true,
     "tsconfig.json": true,
     "yarn.lock": true
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
